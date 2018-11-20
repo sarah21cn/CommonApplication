@@ -2,14 +2,10 @@ package com.sarah.commonapplication.net;
 
 import android.util.Log;
 
-import com.xiaomi.mico.infrareddevicemodule.mvp.model.Banner;
-import com.xiaomi.mico.infrareddevicemodule.mvp.model.HttpResult;
-import com.xiaomi.mico.infrareddevicemodule.mvp.model.MovieEntity;
-import com.xiaomi.mico.infrareddevicemodule.mvp.model.exception.ApiException;
+import com.sarah.commonapplication.mvp.model.HttpResult;
+import com.sarah.commonapplication.mvp.model.MovieEntity;
+import com.sarah.commonapplication.mvp.model.exception.ApiException;
 
-import org.reactivestreams.Subscriber;
-
-import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -29,7 +25,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class HttpManager {
 
-    private static String BASE_URL = "https://api.mina.mi.com/";
+    private static String BASE_URL = "https://api.douban.com/v2/movie/";
     private static long DEFAULT_TIMEOUT = 5l;
 
     private Retrofit mRetrofit;
@@ -72,7 +68,7 @@ public class HttpManager {
     private class HttpResultFunc<T> implements Function<HttpResult<T>, T>{
 
         @Override
-        public T apply(HttpResult<T> tHttpResult) throws ApiException{
+        public T apply(HttpResult<T> tHttpResult) throws ApiException {
             if(tHttpResult != null && tHttpResult.getResultCode() != 0){
                 throw new ApiException(tHttpResult.getResultCode(), tHttpResult.getResultMessage());
             }
@@ -83,12 +79,6 @@ public class HttpManager {
     public Observable<List<MovieEntity>> getTopMovie(int start, int count){
         return mService.getTopMovie(start, count)
                 .map(new HttpResultFunc<List<MovieEntity>>())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
-    }
-
-    public Observable<Banner> getBanner(int type){
-        return mService.getBanner(type)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

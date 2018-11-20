@@ -1,8 +1,7 @@
 package com.sarah.commonapplication.net;
 
-import com.xiaomi.mico.infrareddevicemodule.mvp.model.Banner;
-import com.xiaomi.mico.infrareddevicemodule.mvp.model.HttpResult;
-import com.xiaomi.mico.infrareddevicemodule.mvp.model.MovieEntity;
+import com.sarah.commonapplication.mvp.model.HttpResult;
+import com.sarah.commonapplication.mvp.model.MovieEntity;
 
 import java.util.List;
 
@@ -17,7 +16,4 @@ public interface ApiService {
 
     @GET("top250")
     Observable<HttpResult<List<MovieEntity>>> getTopMovie(@Query("start") int start, @Query("count") int count);
-
-    @GET("/apphomepage/banner/")
-    Observable<Banner> getBanner(@Query("tab") int type);
 }
